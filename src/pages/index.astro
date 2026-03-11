@@ -7,6 +7,7 @@ const servicios = await getCollection('servicios');
     <meta charset="utf-8" />
     <title>Directo al Evento | Servicios Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body class="bg-[#0f0f0f] text-gray-200 font-sans">
     <nav class="p-8 flex justify-between items-center border-b border-white/10">
@@ -36,5 +37,16 @@ const servicios = await getCollection('servicios');
             ))}
         </div>
     </main>
+	<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", user => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => {
+          document.location.href = "/admin/";
+        });
+      }
+    });
+  }
+</script>
 </body>
 </html>
