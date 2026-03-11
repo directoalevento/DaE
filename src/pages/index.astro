@@ -1,50 +1,51 @@
 ---
-// Archivo src/pages/index.astro
+import { getCollection } from 'astro:content';
+// Pillamos los servicios publicados
+const servicios = await getCollection('servicios');
 ---
 <html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Directo al Evento | Catálogo</title>
-    
-    <style is:inline>
-        body { background-color: #0a0a0a; color: white; margin: 0; font-family: sans-serif; }
-        .container { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        button { cursor: pointer; }
-    </style>
-
+    <title>Directo al Evento | Catálogo Premium</title>
     <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    
     <script is:inline src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container p-6">
-        <h1 class="text-4xl font-light tracking-[0.3em] uppercase mb-2">Directo al Evento</h1>
-        <p class="text-gray-500 mb-10 tracking-[0.4em] uppercase text-[10px]">Servicios Premium para Eventos</p>
-        
-        <div class="border border-white/10 p-12 bg-[#111] max-w-sm w-full">
-            <p class="text-gray-400 mb-8 text-sm leading-relaxed">Infraestructura desplegada correctamente.</p>
-            
-            <button 
-                onclick="window.netlifyIdentity.open()" 
-                class="w-full bg-white text-black px-6 py-4 uppercase text-[10px] font-bold tracking-widest hover:bg-gray-200 transition-all shadow-xl"
-            >
-                Configurar Contraseña / Entrar
-            </button>
-        </div>
-    </div>
+<body class="bg-[#0a0a0a] text-white font-sans">
+    <nav class="p-8 flex justify-between items-center border-b border-white/5">
+        <h1 class="text-xl font-light tracking-[0.4em] uppercase">Directo al Evento</h1>
+        <a href="/admin" class="text-[10px] uppercase tracking-widest opacity-40 hover:opacity-100 transition-all">Admin</a>
+    </nav>
 
-    <script is:inline>
-      // Este script detecta el login y te manda al admin
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
-    </script>
+    <main class="max-w-6xl mx-auto p-8">
+        <header class="py-24 text-center">
+            <h2 class="text-5xl font-extralight tracking-tight mb-4">Catálogo de Servicios</h2>
+            <p class="text-gray-500 tracking-[0.5em] uppercase text-[10px]">Experiencias Exclusivas</p>
+        </header>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {servicios.map(item => (
+                <article class="bg-[#111] border border-white/5 group hover:border-white/20 transition-all">
+                    <div class="aspect-video overflow-hidden">
+                        <img src={item.data.image} alt={item.data.title} class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+                    </div>
+                    <div class="p-8">
+                        <span class="text-[9px] uppercase tracking-[0.2em] text-gray-600">{item.data.category}</span>
+                        <h3 class="text-xl font-light mt-2 mb-4 tracking-wide">{item.data.title}</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-8 font-light">{item.data.description}</p>
+                        
+                        <div class="flex flex-wrap gap-6 border-t border-white/5 pt-6">
+                            {item.data.pdf && <a href={item.data.pdf} target="_blank" class="text-[10px] uppercase tracking-widest border-b border-white/20 pb-1 hover:border-white">Dossier PDF</a>}
+                            {item.data.video_url && <a href={item.data.video_url} target="_blank" class="text-[10px] uppercase tracking-widest border-b border-white/20 pb-1 hover:border-white">Ver Vídeo</a>}
+                        </div>
+                    </div>
+                </article>
+            ))}
+        </div>
+    </main>
+
+    <footer class="p-20 text-center border-t border-white/5 text-gray-700 text-[10px] tracking-[0.3em] uppercase">
+        Directo al Evento — 2026
+    </footer>
 </body>
 </html>
