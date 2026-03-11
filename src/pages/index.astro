@@ -1,5 +1,5 @@
 ---
-// No cargamos colección aún para evitar errores de build
+// Archivo src/pages/index.astro
 ---
 <html lang="es">
 <head>
@@ -9,30 +9,25 @@
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#0a0a0a] text-white font-sans">
-    <div class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-        <h1 class="text-4xl font-light tracking-[0.2em] uppercase mb-4">Directo al Evento</h1>
-        <p class="text-gray-500 mb-12 tracking-widest uppercase text-sm">Servicios Premium para Eventos</p>
+<body class="bg-[#0a0a0a] text-white">
+    <div class="min-h-screen flex flex-col items-center justify-center p-6">
+        <h1 class="text-4xl font-light tracking-widest uppercase mb-2">Directo al Evento</h1>
+        <p class="text-gray-500 mb-10 tracking-[0.3em] uppercase text-xs">Servicios Premium</p>
         
-        <div class="border border-white/10 p-12 bg-[#111] max-w-md">
-            <p class="text-gray-400 mb-8">El catálogo está listo, pero aún no has subido contenido.</p>
-            <a href="/admin" class="bg-white text-black px-8 py-3 uppercase text-xs font-bold tracking-widest hover:bg-gray-200 transition-all">
-                Entrar al Panel de Control
-            </a>
+        <div class="border border-white/10 p-10 bg-[#111] text-center">
+            <p class="text-gray-400 mb-6 text-sm">Panel de administración listo.</p>
+            <button onclick="netlifyIdentity.open()" class="bg-white text-black px-8 py-3 uppercase text-[10px] font-bold tracking-widest hover:bg-gray-200">
+                Configurar Contraseña / Entrar
+            </button>
         </div>
     </div>
 
     <script>
-      // Este script captura el token de invitación
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
+      // Redirección al admin tras login
+      declare global { interface Window { netlifyIdentity: any; } }
+      window.netlifyIdentity.on("login", () => {
+          document.location.href = "/admin/";
+      });
     </script>
 </body>
 </html>
