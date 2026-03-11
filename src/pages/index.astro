@@ -6,28 +6,45 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Directo al Evento | Catálogo</title>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style is:inline>
+        body { background-color: #0a0a0a; color: white; margin: 0; font-family: sans-serif; }
+        .container { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        button { cursor: pointer; }
+    </style>
+
+    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#0a0a0a] text-white">
-    <div class="min-h-screen flex flex-col items-center justify-center p-6">
-        <h1 class="text-4xl font-light tracking-widest uppercase mb-2">Directo al Evento</h1>
-        <p class="text-gray-500 mb-10 tracking-[0.3em] uppercase text-xs">Servicios Premium</p>
+<body>
+    <div class="container p-6">
+        <h1 class="text-4xl font-light tracking-[0.3em] uppercase mb-2">Directo al Evento</h1>
+        <p class="text-gray-500 mb-10 tracking-[0.4em] uppercase text-[10px]">Servicios Premium para Eventos</p>
         
-        <div class="border border-white/10 p-10 bg-[#111] text-center">
-            <p class="text-gray-400 mb-6 text-sm">Panel de administración listo.</p>
-            <button onclick="netlifyIdentity.open()" class="bg-white text-black px-8 py-3 uppercase text-[10px] font-bold tracking-widest hover:bg-gray-200">
+        <div class="border border-white/10 p-12 bg-[#111] max-w-sm w-full">
+            <p class="text-gray-400 mb-8 text-sm leading-relaxed">Infraestructura desplegada correctamente.</p>
+            
+            <button 
+                onclick="window.netlifyIdentity.open()" 
+                class="w-full bg-white text-black px-6 py-4 uppercase text-[10px] font-bold tracking-widest hover:bg-gray-200 transition-all shadow-xl"
+            >
                 Configurar Contraseña / Entrar
             </button>
         </div>
     </div>
 
-    <script>
-      // Redirección al admin tras login
-      declare global { interface Window { netlifyIdentity: any; } }
-      window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-      });
+    <script is:inline>
+      // Este script detecta el login y te manda al admin
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
     </script>
 </body>
 </html>
