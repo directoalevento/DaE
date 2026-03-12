@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const servicios = await getCollection('servicios');
+  return servicios.map(servicio => ({
+    params: { slug: servicio.slug },
+    props: { servicio },
+  }));
+}
+
+const { servicio } = Astro.props;
+// Extraemos el contenido completo (si añades más texto en el editor)
+const { Content } = await servicio.render();
+
+// Función básica para convertir link de YouTube normal a Embed
+const getEmbedUrl = (url) => {
+    if (!url) return null;
+    if (url.includes('youtube.com/watch?v=')) {
+        return url.replace('watch?v=', 'embed/');
+    }
+    if (url.includes('youtu.be/')) {
+        return url.replace('youtu.be/', 'youtube.com/embed/');
+    }
+    return url;
+};
+---
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>{servicio.data.title} | Directo al Evento</title>
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
+    <style is:inline>
+        body { background-color: #0a0a0a; color: white; margin: 0; font-family: sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="p-8 border-b border-white/5">
+        <a href="/" class="text-[10px] uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity">
+            ← Volver al Catálogo
+        </a>
+    </nav>
+
+    <main class="max-w-4xl mx-auto p-8 py-20">
+        <header class="mb-16 text-center">
+            <span class="text-[10px] uppercase tracking-[0.3em] text-gray-500">{servicio.data.category}</span>
+            <h1 class="text-4xl md:text-5xl font-light mt-4 mb-8 tracking-wide">{servicio.data.title}</h1>
+            <p class="text-lg md:text-xl text-gray-400 font-light leading-relaxed max-w-2xl mx-auto">{servicio.data.description}</p>
+        </header>
+
+        {servicio.data.video_url && (
+            <div class="aspect-video w-full mb-16 bg-black border border-white/10 shadow-2xl">
+                <iframe 
+                    src={getEmbedUrl(servicio.data.video_url)} 
+                    class="w-full h-full" 
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        )}
+
+        <div class="mb-16">
+            <img src={servicio.data.image} alt={servicio.data.title} class="w-full h-[60vh] object-cover grayscale opacity-80" />
+        </div>
+        
+        <div class="text-center border-t border-white/5 pt-16 pb-8">
+            <a href="https://wa.me/34000000000" target="_blank" class="inline-block bg-white text-black px-8 py-4 uppercase text-[10px] font-bold tracking-widest hover:bg-gray-200 transition-all">
+                Contactar por WhatsApp
+            </a>
+        </div>
+    </main>
+</body>
+</html>
