@@ -13,7 +13,7 @@ collections:
     slug: "{{slug}}"
     fields:
       - {label: "Nombre del Servicio", name: "title", widget: "string"}
-      - {label: "Categoría", name: "category", widget: widget: "string"}
+      - {label: "Categoría", name: "category", widget: "string"}
       - {label: "Imagen Portada", name: "image", widget: "image"}
       - {label: "Descripción Corta", name: "description", widget: "text"}
       - {label: "Enlace Vídeo (YouTube/Vimeo)", name: "video_url", widget: "string", required: false}
