@@ -1,3 +1,3 @@
 ---
-title: Bandas / Grupos
+title: Infantil
 ---
