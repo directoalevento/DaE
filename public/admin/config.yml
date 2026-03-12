@@ -2,20 +2,27 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "public/assets"
-public_folder: "/assets"
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
 
 collections:
+  - name: "categorias"
+    label: "Categorías"
+    folder: "src/content/categorias"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nombre", name: "title", widget: "string"}
+
   - name: "servicios"
     label: "Servicios"
     folder: "src/content/servicios"
     create: true
     slug: "{{slug}}"
     fields:
-      - {label: "Nombre del Servicio", name: "title", widget: "string"}
-      - {label: "Categoría", name: "category", widget: "string"}
-      - {label: "Imagen Portada", name: "image", widget: "image"}
-      - {label: "Descripción Corta", name: "description", widget: "text"}
-      - {label: "Enlace Vídeo (YouTube/Vimeo)", name: "video_url", widget: "string", required: false}
-      - {label: "Catálogo PDF", name: "pdf", widget: "file", required: false}
-      - {label: "Cuerpo del Servicio", name: "body", widget: "markdown"}
+      - {label: "Título", name: "title", widget: "string"}
+      - {label: "Categoría", name: "category", widget: "relation", collection: "categorias", search_fields: ["title"], value_field: "title"}
+      - {label: "Descripción", name: "description", widget: "text"}
+      - {label: "Imagen Principal", name: "image", widget: "image"}
+      - {label: "URL del Vídeo", name: "video_url", widget: "string", required: false}
+      - {label: "Dossier PDF", name: "pdf", widget: "file", required: false}

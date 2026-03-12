@@ -11,4 +11,10 @@ const servicios = defineCollection({
   }),
 });
 
-export const collections = { servicios };
+const categorias = defineCollection({
+  schema: z.object({
+    title: z.string(),
+  }),
+});
+
+export const collections = { servicios, categorias };
